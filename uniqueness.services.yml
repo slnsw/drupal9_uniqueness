@@ -1,0 +1,30 @@
+services:
+  plugin.manager.uniqueness_search_mode:
+    class: Drupal\uniqueness\Plugin\UniquenessSearchModeManager
+    parent: default_plugin_manager
+
+  uniqueness.settings:
+    class: Drupal\uniqueness\Settings
+    public: true
+    arguments:
+    - '@config.factory'
+
+  uniqueness.frontend_settings:
+    class: Drupal\uniqueness\FrontendSettings
+    public: true
+    arguments:
+    - '@config.factory'
+
+  uniqueness.widget:
+    class: Drupal\uniqueness\UniquenessWidget
+    public: true
+    arguments:
+    - '@config.factory'
+
+  uniqueness.form_helper:
+    class: Drupal\uniqueness\Form\FormHelper
+    public: true
+    arguments:
+      - '@uniqueness.settings'
+      - '@current_user'
+      - '@class_resolver'

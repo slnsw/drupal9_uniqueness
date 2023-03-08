@@ -1,0 +1,18 @@
+uniqueness_search_mode: node_title
+uniqueness_search_mode_config:
+  search_page: null
+  search_api_index: null
+uniqueness_scope: all
+uniqueness_results_max: 10
+uniqueness_query_min: 3
+uniqueness_widgets:
+  - inline
+uniqueness_default_title: >-
+  Related content
+uniqueness_default_description: >-
+  Help us avoid duplicate content! If we find content that's related or similar to what you're posting it will be listed here.
+uniqueness_searching_string: >-
+  Searching…
+uniqueness_no_result_string: >-
+  Success! No related content found.
+uniqueness_results_prepend: false

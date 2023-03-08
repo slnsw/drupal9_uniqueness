@@ -1,0 +1,6 @@
+name: Uniqueness
+description: Show similar content during node submission to avoid duplicate content.
+package: Content
+
+type: module
+core_version_requirement: ^8 || ^9 || ^10

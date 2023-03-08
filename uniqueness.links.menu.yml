@@ -1,0 +1,5 @@
+uniqueness.config:
+  title: 'Uniqueness'
+  description: 'Show similar content during node submission to avoid duplicate content.'
+  route_name: uniqueness.config
+  parent: system.admin_config_content

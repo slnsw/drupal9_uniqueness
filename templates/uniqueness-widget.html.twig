@@ -1,0 +1,13 @@
+{% if description | default('') | length > 0 %}
+  <p class="uniqueness-description">{{ description }}<p>
+{% endif %}
+
+<div class="uniqueness-dyn">
+  <span class="uniqueness-search-notifier"></span>
+
+  {% if results | default([]) | length > 0 %}
+    {{ render_var({ '#theme': 'item_list', '#items': results }) }}
+  {% else %}
+    <div class="item-list"><ul></ul></div>
+  {% endif %}
+</div>

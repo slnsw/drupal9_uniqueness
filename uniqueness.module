@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Show similar content during node submission to avoid duplicate content.
+ */
+
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ *
+ * @param string $route_name
+ *   The current route name.
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route matched for the help page.
+ *
+ * @return mixed
+ *   Renderable output for help pages.
+ */
+function uniqueness_help(string $route_name, RouteMatchInterface $route_match) {
+  $output = '<p>' . t('The Uniqueness module helps you avoid duplicate content on your site by informing users of similar or related content as they create<em>new</em> or edit <em>existing</em> content.');
+
+  switch ($route_name) {
+    case 'uniqueness.config':
+      $output .= ' ' . Link::fromTextAndUrl(
+        t('Learn more'),
+        Url::fromRoute('help.page', ['name' => 'uniqueness'])
+      )->toString();
+      $output .= '</p>';
+      return $output;
+
+    case 'help.page.uniqueness':
+      $output .= '</p>';
+      $output .= '<p>' . t('A block and/or in-line user interface element is added to the content adding and/or editing form.') . ' ' .
+                         t('As the user types, Uniqueness searches on the title or vocabulary fields and displays a list of similar content.') . ' ' .
+                         t('To configure overall options such as search and appearance, visit the <a href="@uniqueness-settings-page">uniqueness settings</a> page. To use the in-line user interface element, enable it on each desired <a href="@content-types-page">content type</a> configuration page.',
+                         [
+                           '@content-types-page' => URL::fromRoute('entity.node_type.collection')->toString(),
+                           '@uniqueness-settings-page' => URL::fromRoute('uniqueness.config')->toString(),
+                         ]) . '</p>';
+      $output .= '<h3>' . t('Search modes') . '</h3>';
+      $output .= '<p>' . t('The module can find related content using one of three possible methods:') . '</p>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Simple node title search (default)') . '</dt>' .
+                    '<dd>' . t('Matches the title of a new node by comparing the new title with the title of existing nodes.') . '</dd>';
+      $output .= '<dt>' . t('Drupal search') . '</dt>' .
+                    '<dd>' . t('Searches for content using the standard search module. Requires the core search module to be enabled.') . '</dd>';
+      $output .= '<dt>' . t('Apache Solr search') . '</dt>' .
+                    '<dd>' . t('Searches using the <a href="@apachesolr-project">Apache Solr</a> module. Apache Solr must be to be installed, enabled and configured.',
+                          ['@apachesolr-project' => Url::fromUri('http://drupal.org/project/apachesolr')->toString()]) . '</dd>';
+      $output .= '</dl>';
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Adds Uniqueness settings to entity types that are supported via plugins.
+ *
+ * @param mixed[] $form
+ *   The form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ * @param string $form_id
+ *   The current form ID.
+ */
+function uniqueness_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\uniqueness\Form\FormHelper $form_helper */
+  $form_helper = \Drupal::service('uniqueness.form_helper');
+  $form_helper->formAlter($form, $form_state);
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ *
+ * @return mixed[]
+ *   Extra field information.
+ */
+function uniqueness_entity_extra_field_info(): array {
+  $extra = [];
+
+  $config = \Drupal::config('uniqueness.settings');
+  $widgets = $config->get('uniqueness_widgets') ?? [];
+  $default_title = $config->get('uniqueness_default_title');
+  if (in_array('inline', $widgets)) {
+    $config_factory = \Drupal::service('config.factory');
+    foreach ($config_factory->listAll('uniqueness.bundle_settings.') as $bundle_config_name) {
+      [, , $entity_type, $bundle] = explode('.', $bundle_config_name);
+      $bundle_config = $config_factory->get($bundle_config_name);
+      if (!empty($bundle_config->get('uniqueness_type.add')) || !empty($bundle_config->get('uniqueness_type.edit'))) {
+        $extra[$entity_type][$bundle]['form']['uniqueness'] = [
+          'label' => Xss::filterAdmin($default_title),
+          'description' => t('Uniqueness inline widget.'),
+          'weight' => 0,
+        ];
+      }
+    }
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * @param mixed[] $existing
+ * @param string $type
+ * @param string $theme
+ * @param string $path
+ *
+ * @return mixed[]
+ *   Theme description array.
+ */
+function uniqueness_theme(array $existing, string $type, string $theme, string $path): array {
+  $theme_funcs['uniqueness_widget'] = [
+    'variables' => [
+      'description' => NULL,
+      'results' => NULL,
+    ],
+  ];
+  return $theme_funcs;
+}

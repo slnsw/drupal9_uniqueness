@@ -1,0 +1,61 @@
+uniqueness.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    uniqueness_search_mode:
+      type: string
+      label: 'Search mode'
+    uniqueness_search_mode_config:
+      type: mapping
+      label: 'Search mode configuration'
+      mapping:
+        search_page:
+          type: string
+          label: 'Drupal Search page'
+        search_api_index:
+          type: string
+          label: 'Search API index'
+    uniqueness_scope:
+      type: string
+      label: 'Search scope'
+    uniqueness_results_max:
+      type: integer
+      label: 'Maximum number of results'
+    uniqueness_query_min:
+      type: integer
+      label: 'Minimum length of search string'
+    uniqueness_widgets:
+      type: sequence
+      label: 'Widgets'
+      sequence:
+        - type: string
+    uniqueness_default_title:
+      type: string
+      label: 'Default title'
+    uniqueness_default_description:
+      type: string
+      label: 'Default description'
+    uniqueness_searching_string:
+      type: string
+      label: 'Search notifier'
+    uniqueness_no_result_string:
+      type: string
+      label: 'No related content message'
+    uniqueness_results_prepend:
+      type: boolean
+      label: 'Results display'
+
+simple_sitemap.bundle_settings.*.*:
+  label: 'Entity bundle settings'
+  type: config_object
+  mapping:
+    uniqueness_type:
+      type: mapping
+      label: 'Provide uniqueness search'
+      mapping:
+        add:
+          type: boolean
+          label: 'When adding new content of this content type'
+        edit:
+          type: boolean
+          label: 'When editing existing content of this content type'

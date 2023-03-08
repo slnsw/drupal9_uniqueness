@@ -1,0 +1,8 @@
+administer uniqueness:
+  title: 'Administer uniqueness settings'
+  description: 'Configure the uniqueness module.'
+  restrict access: true
+use uniqueness widget:
+  title: 'Use uniqueness widget'
+  description: 'Display the uniqueness widget during content authoring.'
+  restrict access: false

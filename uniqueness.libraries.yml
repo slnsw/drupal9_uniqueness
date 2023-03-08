@@ -1,0 +1,15 @@
+frontend:
+  js:
+    js/uniqueness.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery
+    - core/once
+
+fieldsetSummaries:
+  js:
+    js/uniqueness.fieldsetSummaries.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

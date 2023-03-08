@@ -1,0 +1,17 @@
+uniqueness.config:
+  path: '/admin/config/content/uniqueness'
+  defaults:
+    _title: 'Uniqueness'
+    _form: '\Drupal\uniqueness\Form\ConfigForm'
+  requirements:
+    _permission: 'administer uniqueness'
+
+uniqueness.search:
+  path: '/uniqueness-search/{entity_type}/{bundle}'
+  defaults:
+    _title: 'Uniqueness'
+    _controller: '\Drupal\uniqueness\Controller\SearchController::search'
+    entity_type: null
+    bundle: null
+  requirements:
+    _permission: 'use uniqueness widget'
