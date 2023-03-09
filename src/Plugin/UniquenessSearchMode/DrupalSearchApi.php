@@ -32,9 +32,9 @@ class DrupalSearchApi extends UniquenessSearchModeBase {
     $search_index_storage = \Drupal::service('entity_type.manager')
       ->getStorage('search_api_index');
 
-    foreach ($search_index_storage->getQuery()->execute() as $index_id) {
-      $search_index = $search_index_storage->load($index_id);
-      $options[$index_id] = $search_index->label();
+    foreach ($search_index_storage->getQuery()->execute() as $index_id) { // @phpstan-ignore-line
+      $search_index = $search_index_storage->load($index_id); // @phpstan-ignore-line
+      $options[$index_id] = $search_index->label(); // @phpstan-ignore-line
     }
 
     $plugin_id = $this->settings()->get('uniqueness_search_mode_config.search_api_index');
@@ -83,7 +83,7 @@ class DrupalSearchApi extends UniquenessSearchModeBase {
 
     $search_index_storage = \Drupal::service('entity_type.manager')
       ->getStorage('search_api_index');
-    $search_index = $search_index_storage->load($search_index_id);
+    $search_index = $search_index_storage->load($search_index_id); // @phpstan-ignore-line
     if (empty($search_index)) {
       // @todo warning in logs.
       return [];

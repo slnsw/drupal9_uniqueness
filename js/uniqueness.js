@@ -61,7 +61,7 @@
   };
 
   Drupal.uniqueness.prototype.update = function (data) {
-    var expand = FALSE;
+    var expand = false;
     uniqueness.notifier.removeClass('uniqueness-dyn-searching').empty();
     uniqueness.widget.css('background-image', '');
     uniqueness = this;
@@ -83,7 +83,7 @@
           items += '<li><a href="' + item.href + '" target="_blank">' + item.title + '</a> ' + (item.status == 0 ? '(' + Drupal.t('not published') + ')' : '') + '</li>';
           // Store the new item.
           uniqueness.listCache[cacheKey] = item;
-          expand = TRUE;
+          expand = true;
         }
       });
       // Show list.
@@ -113,7 +113,7 @@
     if (expand && uniqueness.autoOpen) {
       uniqueness.autoOpen.find('summary').click();
       // Only auto open the fieldset once per page load.
-      uniqueness.autoOpen = NULL;
+      uniqueness.autoOpen = null;
     }
   };
 
@@ -130,7 +130,7 @@
     }
     this.timer = setTimeout(function () {
       // Inform user we're searching.
-      if (uniqueness.notifier.hasClass('uniqueness-dyn-searching') == FALSE) {
+      if (uniqueness.notifier.hasClass('uniqueness-dyn-searching') == false) {
         uniqueness.notifier.addClass('uniqueness-dyn-searching').html(drupalSettings.uniqueness['searchingString']);
         uniqueness.widget.css(uniqueness.widgetCSS);
       }
@@ -150,7 +150,7 @@
           uniqueness.update(data);
           // Save this string, it found results.
           uniqueness.searchCache[searchString] = searchString;
-          var blockSet = TRUE;
+          var blockSet = true;
         }
         // Nothing new found so show existing results.
         if (blockSet == undefined) {
