@@ -112,7 +112,8 @@ class FormHelper {
    *   TRUE if a form can be altered, FALSE otherwise.
    */
   protected function formAlterAccess(): bool {
-    return $this->currentUser->hasPermission('administer uniqueness');
+    return $this->currentUser->hasPermission('administer uniqueness') ||
+      $this->currentUser->hasPermission('use uniqueness widget');
   }
 
   /**
